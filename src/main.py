@@ -11,11 +11,17 @@ from src.providers import get_app_config, get_mongo_db, get_mongo_client
 from src.mongo import get_mongodb, create_mongo_client
 
 
+def create_broker(config: AppSettings):
+    broker = RabbitBroker(config.rabbitmq.connection_url)
+    broker.include_router(handler)
+
+    return broker
+
+
 def create_app():
     config = AppSettings()
 
-    broker = RabbitBroker(config.rabbitmq.connection_url)
-    broker.include_router(handler)
+    broker = create_broker(config)
 
     mongo_client = create_mongo_client(config.mongo)
     mongo_db = get_mongodb(mongo_client, config.mongo)
