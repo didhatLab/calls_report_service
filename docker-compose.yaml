@@ -10,6 +10,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root  # Root username
       MONGO_INITDB_ROOT_PASSWORD: example  # Root password
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
 
   rabbitmq:
     image: rabbitmq:management
@@ -19,6 +26,14 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: 123
+
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
 
   report_service:
     build:
@@ -31,8 +46,7 @@ services:
       rabbitmq:
         condition: service_started
       mongodb:
-        condition: service_started
-
+        condition: service_healthy
 
   client:
     build:
@@ -44,7 +58,7 @@ services:
       rabbitmq:
         condition: service_started
       mongodb:
-        condition: service_started
+        condition: service_healthy
 
 
 
