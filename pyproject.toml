@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ring-reporter"
+name = "calls_report_service"
 version = "0.1.0"
 description = ""
 authors = ["Daniil Solynin"]
