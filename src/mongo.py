@@ -9,6 +9,7 @@ def create_mongo_client(config: MongoSetting):
         config.port,
         username=config.username,
         password=config.password,
+        maxpoolsize=config.max_pool_size,
     )
 
     return client
