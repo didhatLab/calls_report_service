@@ -1,0 +1,52 @@
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+#    ports:
+#      - "27018:27017"  # Port mapping
+#    volumes:
+#      - mongo_data:/data/db  # Persistent storage
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root  # Root username
+      MONGO_INITDB_ROOT_PASSWORD: example  # Root password
+
+  rabbitmq:
+    image: rabbitmq:management
+#    ports:
+#      - "5672:5672"        # RabbitMQ default port
+#      - "15672:15672"      # RabbitMQ Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: 123
+
+  report_service:
+    build:
+      dockerfile: docker/app.dockerfile
+      context: .
+    env_file:
+      - .env
+
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      mongodb:
+        condition: service_started
+
+
+  client:
+    build:
+      dockerfile: docker/client.dockerfile
+      context: .
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      mongodb:
+        condition: service_started
+
+
+
+
+

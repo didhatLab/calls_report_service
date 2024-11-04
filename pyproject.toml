@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "ring-reporter"
+version = "0.1.0"
+description = ""
+authors = ["Daniil Solynin"]
+license = "GNU"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+faststream = {extras = ["rabbit"], version = "^0.5.28"}
+pydantic-settings = "^2.6.1"
+motor = "^3.6.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.2"
+
+
+[tool.poetry.group.migrate-date.dependencies]
+ijson = "^3.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
