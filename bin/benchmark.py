@@ -3,7 +3,6 @@ import random
 import json
 from collections import defaultdict
 
-from faststream import FastStream
 from faststream.rabbit import RabbitBroker
 from aio_pika.message import Message
 
@@ -18,7 +17,6 @@ async def main():
     config = RabbitmqSetting()
     broker = RabbitBroker(config.connection_url)
     await broker.connect()
-    # app = FastStream(broker)
 
     queue = await broker.declare_queue(response_queue)
     task_storage = {}

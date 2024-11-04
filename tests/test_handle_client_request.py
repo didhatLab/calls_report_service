@@ -47,16 +47,15 @@ async def test_handle_client_request(motor_mongodb, config):
             {"phone": 1, "start_date": start_ns, "end_date": start_ns + 4000},
             {"phone": 1, "start_date": start_ns, "end_date": start_ns + 8000},
             {"phone": 1, "start_date": start_ns, "end_date": start_ns + 40000},
-            {"phone": 1, "start_date": start_ns, "end_date": start_ns + 12000}
+            {"phone": 1, "start_date": start_ns, "end_date": start_ns + 12000},
         ]
     )
 
-    req = CallsStatRequest(
-        correlation_id=1,
-        phones=[1]
-    )
+    req = CallsStatRequest(correlation_id=1, phones=[1])
 
-    response: CallsStatsResponse = await handle_client_ring_request(req, motor_mongodb, config)
+    response: CallsStatsResponse = await handle_client_ring_request(
+        req, motor_mongodb, config
+    )
 
     assert response.correlation_id == req.correlation_id
     assert response.to == "client"
@@ -75,14 +74,3 @@ async def test_handle_client_request(motor_mongodb, config):
     assert phone_stat.cnt_att_dur.sec_30 == 1
     assert phone_stat.sum_price_att_over_15 == 400
     assert phone_stat.avg_dur_att == 16
-
-
-
-
-
-
-
-
-
-
-
