@@ -15,6 +15,9 @@ async def main():
     await broker.connect()
     app = FastStream(broker)
 
+    await broker.declare_queue(response_queue)
+    await broker.declare_exchange(service_exchange)
+
     task_storage = {}
     publisher_task = asyncio.create_task(task_publisher(broker, task_storage))
 
@@ -36,7 +39,7 @@ async def task_publisher(broker: RabbitBroker, task_storage: dict):
     phone_numbers = [i for i in range(0, 200)]
 
     while True:
-        tasks_for_generating = 1
+        tasks_for_generating = random.randint(1, 10)
         reqs = []
         for i in range(tasks_for_generating):
             req = CallsStatRequest(
